@@ -1,6 +1,8 @@
+import { Injectable } from "@nestjs/common";
 import StudentsRepository, { FindStudentsRequestDto, PaginatedFindStudentsResponse } from "../repository/studentsRepository";
 
-export class FindStudentsUseCase {
+@Injectable()
+export default class FindStudentsUseCase {
   constructor(
     private studentsRepository: StudentsRepository
   ) {}

@@ -2,7 +2,9 @@ import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
 import StudentsRepository, { CreateStudentDTO } from "../repository/studentsRepository";
 import { ResourceAlreadyExistError } from "@/shared/exceptions/resourceAlreadyExistError";
 import Student from "../../entity/student";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export default class CreateStudentUseCase {
   constructor(
     private studentsRepository: StudentsRepository
