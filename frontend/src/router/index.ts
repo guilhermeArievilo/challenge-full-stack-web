@@ -32,7 +32,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (!authStore.accessToken) {
     const authContainer = inject<AuthContainer>('auth')
-    await authContainer?.refreshUseCase.execute()
+    await authContainer?.refresh.execute()
   }
 
   if (to.meta.requiresAuth && !authStore.accessToken) {

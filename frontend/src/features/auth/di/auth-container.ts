@@ -14,10 +14,10 @@ export function createAuthContainer() {
   const authRepository = new AuthRepositoryImpl(authRemoteDatasource, authLocalDatasource)
 
   return {
-    loginUseCase: new LoginUseCase(authRepository),
-    logoutUseCase: new LogoutUseCase(authRepository),
-    registerUseCase: new RegisterUseCase(authRepository),
-    refreshUseCase: new RefreshUseCase(authRepository),
+    login: new LoginUseCase(authRepository),
+    logout: new LogoutUseCase(authRepository),
+    register: new RegisterUseCase(authRepository),
+    refresh: new RefreshUseCase(authRepository),
   }
 }
 

@@ -65,7 +65,7 @@ function goToRegister() {
 
 async function onLogin() {
   try {
-    const result = await authServiceContainer.loginUseCase.execute({
+    const result = await authServiceContainer.login.execute({
       identifier: email.value,
       password: password.value,
     })
