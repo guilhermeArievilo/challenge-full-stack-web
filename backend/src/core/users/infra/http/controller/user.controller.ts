@@ -15,8 +15,7 @@ export class UserController {
     private createUserUseCase: CreateUserUseCase
   ) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post('/register')
   async createUser(@Body() userData: CreateUserBodyDTO) {
     const { name, email, password } = userData;
     try {

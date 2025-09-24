@@ -1,0 +1,36 @@
+import type { LoginDTO, TokenDto, RegisterDTO } from '../../domain/entities/authEntities'
+import type AuthRepository from '../../domain/repository/authRepository'
+import AuthRemoteDatasource from '../datasource/auth-remote-datasource'
+import { type AuthStoreDatasource } from '../datasource/auth-store-datasource'
+
+export default class AuthRepositoryImpl implements AuthRepository {
+  constructor(
+    private readonly authRemoteDatasource: AuthRemoteDatasource,
+    private readonly authLocalDatasource: AuthStoreDatasource,
+  ) {}
+
+  async refreshToken(): Promise<TokenDto> {
+    return this.authRemoteDatasource.refreshToken()
+  }
+
+  async login(params: LoginDTO): Promise<TokenDto> {
+    return await this.authRemoteDatasource.login(params)
+  }
+
+  async register(params: RegisterDTO): Promise<TokenDto> {
+    return await this.authRemoteDatasource.register(params)
+  }
+
+  async logout(): Promise<void> {
+    return await this.authRemoteDatasource.logout()
+  }
+  setAccessToken(token: string): void {
+    this.authLocalDatasource.setToken(token)
+  }
+  getAccessToken(): string | null {
+    return this.authLocalDatasource.accessToken
+  }
+  clearAccessToken(): void {
+    this.authLocalDatasource.clearToken()
+  }
+}

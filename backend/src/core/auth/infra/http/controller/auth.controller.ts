@@ -1,10 +1,9 @@
 import LoginUseCase from "@/core/auth/domain/application/use-cases/loginUseCase";
 import LogoutUseCase from "@/core/auth/domain/application/use-cases/logoutUseCase";
 import RefreshUseCase from "@/core/auth/domain/application/use-cases/refreshUseCase";
-import { Body, Controller, HttpCode, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, Post, Req, Res } from "@nestjs/common";
 import LoginHttpRequestDTO from "../presentation/dtos/loginHttpRequestDTO";
-import RefreshHttpRequestDTO from "../presentation/dtos/refreshHttpRequestDTO";
-import LogoutHttpRequestDTO from "../presentation/dtos/logoutHttpRequestDTO";
+import type { Response, Request } from "express";
 
 @Controller('auth')
 export class AuthController {
@@ -14,8 +13,8 @@ export class AuthController {
     private logoutUseCase: LogoutUseCase
   ) {}
 
-  @Post('login')
-  async login(@Body() loginData: LoginHttpRequestDTO) {
+  @Post('/login')
+  async login(@Body() loginData: LoginHttpRequestDTO, @Res() res: Response) {
     const { identifier, password } = loginData;
 
     try {
@@ -24,33 +23,51 @@ export class AuthController {
         password
       });
 
-      return tokens;
+      res.cookie('refreshToken', tokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/auth'
+      });
+
+      return res.json({ accessToken: tokens.accessToken });
     } catch (error) {
       throw error;
     }
   }
 
   @HttpCode(200)
-  @Post('refresh')
-  async refresh(@Body('refreshToken') refreshTokenDto: RefreshHttpRequestDTO) {
-    const { refreshToken } = refreshTokenDto;
+  @Post('/refresh')
+  async refresh(@Req() req: Request, @Res() res: Response) {
+    const refreshToken = req.cookies.refreshToken;
 
     try {
       const tokens = await this.refreshUseCase.execute(refreshToken);
 
-      return tokens;
+      res.cookie('refreshToken', tokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/auth'
+      });
+
+      return res.json({ accessToken: tokens.accessToken });
     } catch (error) {
       throw error;
     }
   }
 
   @HttpCode(200)
-  @Post('logout')
-  async logout(@Body('refreshToken') refreshTokenDto: LogoutHttpRequestDTO) {
-    const { refreshToken } = refreshTokenDto;
+  @Post('/logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    const refreshToken = req.cookies.refreshToken;
 
     try {
       await this.logoutUseCase.execute(refreshToken);
+      
+      res.clearCookie('refreshToken', { path: '/auth' });
+
+      return res.sendStatus(200);
     } catch (error) {
       throw error;
     }
