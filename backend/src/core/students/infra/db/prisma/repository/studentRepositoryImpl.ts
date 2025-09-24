@@ -29,7 +29,7 @@ export default class StudentRepositoryImpl implements StudentsRepository {
   }
 
   async findByCpf(cpf: string): Promise<Student | null> {
-    const rawStudentData = await this.prismaService.student.findUnique({ where: { cpf } });
+    const rawStudentData = await this.prismaService.student.findFirst({ where: { cpf } });
 
     if (!rawStudentData) {
       return null;
@@ -39,7 +39,7 @@ export default class StudentRepositoryImpl implements StudentsRepository {
   }
 
   async findByEmail(email: string): Promise<Student | null> {
-    const rawStudentData = await this.prismaService.student.findUnique({ where: { email } });
+    const rawStudentData = await this.prismaService.student.findFirst({ where: { email } });
 
     if (!rawStudentData) {
       return null;

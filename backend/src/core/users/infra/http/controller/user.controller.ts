@@ -1,11 +1,12 @@
 import CreateUserUseCase from "@/core/users/domain/application/use-cases/createUserUseCase";
 import FindUserByEmailUseCase from "@/core/users/domain/application/use-cases/findUserByEmailUseCase";
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, UseGuards } from "@nestjs/common";
 import UserViewModel from "../presentation/view-models/userViewModel";
 import ResourceNotFoundError from "@/shared/exceptions/resourceNotFoundError";
 import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
 import CreateUserBodyDTO from "../presentation/dto/CreateUserBodyDTO";
 import { ResourceAlreadyExistError } from "@/shared/exceptions/resourceAlreadyExistError";
+import { JwtAuthGuard } from "@/shared/infra/jwt/jwt-auth.guard";
 
 @Controller('user')
 export class UserController {
@@ -14,6 +15,7 @@ export class UserController {
     private createUserUseCase: CreateUserUseCase
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createUser(@Body() userData: CreateUserBodyDTO) {
     const { name, email, password } = userData;
@@ -38,6 +40,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/:email')
   async getUserByEmail(@Param('email') email: string) {
     try {

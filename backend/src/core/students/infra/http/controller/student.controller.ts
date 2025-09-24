@@ -3,7 +3,7 @@ import DeleteStudentUseCase from "@/core/students/domain/application/use-cases/d
 import FindStudentByIdUseCase from "@/core/students/domain/application/use-cases/findStudentByIdUseCase";
 import FindStudentsUseCase from "@/core/students/domain/application/use-cases/findStudentsUseCase";
 import UpdateStudentUseCase from "@/core/students/domain/application/use-cases/updateStudentUseCase";
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import CreateStudentHttpDto from "../presentation/dtos/createStudentHttpDto";
 import StudentViewModel from "../presentation/view-models/studentViewModel";
 import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
@@ -11,6 +11,7 @@ import { ResourceAlreadyExistError } from "@/shared/exceptions/resourceAlreadyEx
 import ResourceNotFoundError from "@/shared/exceptions/resourceNotFoundError";
 import { StudentProps } from "@/core/students/domain/entity/student";
 import UpdateStudentHttpDto from "../presentation/dtos/updateStudentHttpDto";
+import { JwtAuthGuard } from "@/shared/infra/jwt/jwt-auth.guard";
 
 @Controller('students')
 export class StudentController {
@@ -22,6 +23,7 @@ export class StudentController {
     private deleteStudentUseCase: DeleteStudentUseCase,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createStudent(@Body() studentData: CreateStudentHttpDto) {
     const { name, email, cpf, ra } = studentData;
@@ -48,6 +50,7 @@ export class StudentController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async getStudentById(@Param('id') id: string) {
     try {
@@ -66,6 +69,7 @@ export class StudentController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getStudents(
     @Query('page') page?: number,
@@ -94,6 +98,7 @@ export class StudentController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/:id')
   async updateStudent(
     @Param('id') id: string,
@@ -121,6 +126,7 @@ export class StudentController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async deleteStudent(@Param('id') id: string) {
     try {
