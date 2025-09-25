@@ -13,13 +13,12 @@ export default class UpdateStudentUseCase {
   async execute(id: string, data: UpdateStudentDTO): Promise<Student> {
     if (!id) throw new RequiredFieldError("ID");
 
-    const { name, email } = data;
+    const { email } = data;
 
-    if (!name) throw new RequiredFieldError("Name");
-    if (!email) throw new RequiredFieldError("Email");
-
-    const existingStudentByEmail = await this.studentsRepository.findByEmail(email);
-    if (existingStudentByEmail) throw new ResourceAlreadyExistError("Student with this Email already exists");
+    if (email) {
+      const existingStudentByEmail = await this.studentsRepository.findByEmail(email);
+      if (existingStudentByEmail) throw new ResourceAlreadyExistError("Student with this Email already exists");
+    }
 
     return await this.studentsRepository.update(id, data);
   }
