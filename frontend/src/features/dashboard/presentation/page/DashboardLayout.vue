@@ -37,17 +37,21 @@
           </v-list-subheader>
           <v-list-item
             class="rounded-pill"
-            prepend-icon="mdi-home"
+            prepend-icon="mdi-account-school"
             title="Alunos"
             value="students"
             color="secondary"
+            active
           />
         </v-list>
 
         <v-list>
           <v-list-item>
-            <template v-slot:append>
+            <template v-if="!rail" v-slot:append>
               <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
+            </template>
+            <template v-else v-slot:prepend>
+              <v-btn icon="mdi-chevron-right" variant="text" @click.stop="rail = !rail"></v-btn>
             </template>
           </v-list-item>
         </v-list>
@@ -65,7 +69,7 @@
 import { ref, onMounted, inject } from 'vue'
 import type { UserContainer } from '@/features/user/di/userContainer'
 import type { User } from '@/features/user/domain/entity/user'
-import type { AuthContainer } from '@/features/auth/di/auth-container'
+import type { AuthContainer } from '@/features/auth/di/authContainer'
 
 const drawer = ref(true)
 const rail = ref(true)

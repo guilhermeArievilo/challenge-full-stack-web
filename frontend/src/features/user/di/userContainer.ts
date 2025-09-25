@@ -1,7 +1,7 @@
 import api from '@/core/http/axios-client'
 import UserRemoteDatasource from '../data/datasource/userRemoteDatasource'
 import { useUserStore } from '../data/datasource/userStoreDatasource'
-import UserRepositoryImpl from '../data/repository/UserRepositoryImpl'
+import UserRepositoryImpl from '../data/repository/userRepositoryImpl'
 import findUserUseCase from '../domain/use-cases/findUserUseCase'
 import getLocalUserUseCase from '../domain/use-cases/getLocalUser'
 

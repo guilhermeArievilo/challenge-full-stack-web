@@ -1,8 +1,8 @@
 import type {
   FindStudentsRequestDto,
   PaginatedFindStudentsResponse,
-} from '../repository/students-repository'
-import type StudentsRepository from '../repository/students-repository'
+} from '../repository/studentRepository'
+import type StudentsRepository from '../repository/studentRepository'
 
 export default class FindStudentsUseCase {
   constructor(private studentsRepository: StudentsRepository) {}

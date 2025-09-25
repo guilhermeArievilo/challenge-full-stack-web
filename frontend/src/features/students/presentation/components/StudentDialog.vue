@@ -58,7 +58,7 @@ import type { Student } from '../../domain/entity/student'
 import type {
   CreateStudentDTO,
   UpdateStudentDTO,
-} from '@/features/students/domain/repository/students-repository'
+} from '@/features/students/domain/repository/studentRepository'
 import { requiredRule, onlyNumbersRule, emailRule, cpfRule } from '@/shared/utils/rolesValidations'
 const { student } = defineProps<{ student?: Student }>()
 const open = defineModel<boolean | undefined>()

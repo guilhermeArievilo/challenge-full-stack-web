@@ -1,8 +1,8 @@
 import type UserRepository from '@/features/user/domain/repository/userRepository'
 import type { LoginDTO, TokenDto, RegisterDTO } from '../../domain/entities/authEntities'
 import type AuthRepository from '../../domain/repository/authRepository'
-import AuthRemoteDatasource from '../datasource/auth-remote-datasource'
-import { type AuthStoreDatasource } from '../datasource/auth-store-datasource'
+import AuthRemoteDatasource from '../datasource/authRemoteDatasource'
+import { type AuthStoreDatasource } from '../datasource/authStoreDatasource'
 import type { User } from '@/features/user/domain/entity/user'
 
 export default class AuthRepositoryImpl implements AuthRepository {

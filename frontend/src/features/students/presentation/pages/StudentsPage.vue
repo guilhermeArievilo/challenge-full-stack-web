@@ -66,13 +66,13 @@
 import { onMounted, ref, inject } from 'vue'
 import type { DataTableHeader } from 'vuetify'
 import StudentDialog from '../components/StudentDialog.vue'
+import type { StudentContainer } from '../../di/studentContainer'
+import type { Student } from '../../domain/entity/student'
 import type {
   CreateStudentDTO,
   PaginatedFindStudentsResponse,
   UpdateStudentDTO,
-} from '../../domain/repository/students-repository'
-import type { StudentContainer } from '../../di/students-container'
-import type { Student } from '../../domain/entity/student'
+} from '../../domain/repository/studentRepository'
 
 const studentsServiceContiner = inject<StudentContainer>('student')
 const studentsResult = ref<PaginatedFindStudentsResponse | null>(null)

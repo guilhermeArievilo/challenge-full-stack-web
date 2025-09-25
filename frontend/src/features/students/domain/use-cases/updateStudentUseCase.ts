@@ -1,6 +1,6 @@
 import type { Student } from '../entity/student'
-import type { UpdateStudentDTO } from '../repository/students-repository'
-import type StudentsRepository from '../repository/students-repository'
+import type { UpdateStudentDTO } from '../repository/studentRepository'
+import type StudentsRepository from '../repository/studentRepository'
 
 export default class UpdateStudentUseCase {
   constructor(private studentsRepository: StudentsRepository) {}

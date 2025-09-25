@@ -4,9 +4,9 @@ import type {
   UpdateStudentDTO,
   FindStudentsRequestDto,
   PaginatedFindStudentsResponse,
-} from '../../domain/repository/students-repository'
-import type StudentsRepository from '../../domain/repository/students-repository'
-import type StudentRemoteDatasource from '../datasource/student-remote-datasource'
+} from '../../domain/repository/studentRepository'
+import type StudentsRepository from '../../domain/repository/studentRepository'
+import type StudentRemoteDatasource from '../datasource/studentRemoteDatasource'
 
 export default class StudentRepositoryImpl implements StudentsRepository {
   constructor(private readonly studentRemoteDatasource: StudentRemoteDatasource) {}

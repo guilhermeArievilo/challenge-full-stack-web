@@ -1,11 +1,11 @@
 import api from '@/core/http/axios-client'
-import StudentRemoteDatasource from '../data/datasource/student-remote-datasource'
-import StudentRepositoryImpl from '../data/repository/student-repository-impl'
-import CreateStudentUseCase from '../domain/use-cases/create-student-use-case'
-import UpdateStudentUseCase from '../domain/use-cases/update-student-use-case'
-import FindStudentByIdUseCase from '../domain/use-cases/find-student-by-id-use-case'
-import FindStudentsUseCase from '../domain/use-cases/find-students-use-case'
-import DeleteStudentUseCase from '../domain/use-cases/delete-student-use-case'
+import StudentRemoteDatasource from '../data/datasource/studentRemoteDatasource'
+import StudentRepositoryImpl from '../data/repository/studentRepositoryImpl'
+import CreateStudentUseCase from '../domain/use-cases/createStudentUseCase'
+import UpdateStudentUseCase from '../domain/use-cases/updateStudentUseCase'
+import FindStudentByIdUseCase from '../domain/use-cases/findStudentByIdUseCase'
+import FindStudentsUseCase from '../domain/use-cases/findStudentUseCase'
+import DeleteStudentUseCase from '../domain/use-cases/deleteStudentUseCase'
 
 export function createStudentContainer() {
   const studentRemoteDatasource = new StudentRemoteDatasource(api)

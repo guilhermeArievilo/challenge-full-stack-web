@@ -4,7 +4,7 @@ import type {
   FindStudentsRequestDto,
   PaginatedFindStudentsResponse,
   UpdateStudentDTO,
-} from '../../domain/repository/students-repository'
+} from '../../domain/repository/studentRepository'
 import type { Student } from '../../domain/entity/student'
 
 export default class StudentRemoteDatasource {

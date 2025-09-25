@@ -1,4 +1,4 @@
-import type { AuthContainer } from '@/features/auth/di/auth-container'
+import type { AuthContainer } from '@/features/auth/di/authContainer'
 import LoginPage from '@/features/auth/presentation/page/LoginPage.vue'
 import RegisterPage from '@/features/auth/presentation/page/RegisterPage.vue'
 import DashboardLayout from '@/features/dashboard/presentation/page/DashboardLayout.vue'

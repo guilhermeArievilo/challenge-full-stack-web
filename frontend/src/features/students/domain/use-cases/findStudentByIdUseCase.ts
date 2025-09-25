@@ -1,5 +1,5 @@
 import type { Student } from '../entity/student'
-import type StudentsRepository from '../repository/students-repository'
+import type StudentsRepository from '../repository/studentRepository'
 
 export default class FindStudentByIdUseCase {
   constructor(private studentsRepository: StudentsRepository) {}

@@ -1,4 +1,4 @@
-import type StudentsRepository from '../repository/students-repository'
+import type StudentsRepository from '../repository/studentRepository'
 
 export default class DeleteStudentUseCase {
   constructor(private studentsRepository: StudentsRepository) {}

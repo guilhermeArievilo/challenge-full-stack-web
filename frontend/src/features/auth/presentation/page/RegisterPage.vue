@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { type AuthContainer } from '../../di/auth-container'
+import { type AuthContainer } from '../../di/authContainer'
 import { useRouter } from 'vue-router'
 import { requiredRule, emailRule } from '@/shared/utils/rolesValidations'
 const router = useRouter()
