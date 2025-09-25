@@ -19,6 +19,7 @@ import router from './router'
 import vuetify from './core/plugins/vuetify/vuetify'
 import { createAuthContainer } from './features/auth/di/auth-container'
 import { createStudentContainer } from './features/students/di/students-container'
+import { createUserContainer } from './features/user/di/userContainer'
 
 const app = createApp(App)
 
@@ -29,8 +30,10 @@ app.use(vuetify)
 app.directive('maska', vMaska)
 
 const authContainer = createAuthContainer()
+const userContainer = createUserContainer()
 const studentContainer = createStudentContainer()
 app.provide('auth', authContainer)
 app.provide('student', studentContainer)
+app.provide('user', userContainer)
 
 app.mount('#app')

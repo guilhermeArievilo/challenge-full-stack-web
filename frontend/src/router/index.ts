@@ -1,6 +1,5 @@
-import { useAuthStore } from '@/features/auth/data/datasource/auth-store-datasource'
 import type { AuthContainer } from '@/features/auth/di/auth-container'
-import LoginPage from '@/features/auth/presentation/page/loginPage.vue'
+import LoginPage from '@/features/auth/presentation/page/LoginPage.vue'
 import RegisterPage from '@/features/auth/presentation/page/RegisterPage.vue'
 import DashboardLayout from '@/features/dashboard/presentation/page/DashboardLayout.vue'
 import StudentsPage from '@/features/students/presentation/pages/StudentsPage.vue'
@@ -14,11 +13,13 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPage,
+      meta: { guestOnly: true },
     },
     {
       path: '/register',
       name: 'Register',
       component: RegisterPage,
+      meta: { guestOnly: true },
     },
     {
       path: '/',
@@ -34,19 +35,28 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach(async (to, from, next) => {
-  const authStore = useAuthStore()
+router.beforeEach(async (to) => {
+  const authContainer = inject<AuthContainer>('auth')
 
-  if (!authStore.accessToken) {
-    const authContainer = inject<AuthContainer>('auth')
-    await authContainer?.refresh.execute()
+  if (to.meta.requiresAuth) {
+    const authenticated = await authContainer!.refresh.execute()
+    if (!authenticated) {
+      return '/login'
+    }
+
+    return true
   }
 
-  if (to.meta.requiresAuth && !authStore.accessToken) {
-    next('/login')
-  } else {
-    next()
+  if (to.meta.guestOnly) {
+    const authenticated = await authContainer!.refresh.execute()
+    if (authenticated) {
+      return '/'
+    }
+
+    return true
   }
+
+  return true
 })
 
 export default router

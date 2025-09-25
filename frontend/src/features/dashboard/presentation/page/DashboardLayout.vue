@@ -7,12 +7,17 @@
         </div>
       </template>
       <template v-slot:append>
-        <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-          title="Sandra Adams"
-        >
+        <v-list-item prepend-avatar="@/assets/avatar.jpg" :title="user?.name || 'Buscando...'">
           <template v-slot:subtitle>
-            <v-btn class="text-none" color="error" variant="plain" density="compact">Sair</v-btn>
+            <v-btn
+              class="text-none"
+              color="error"
+              variant="plain"
+              density="compact"
+              @click="logout"
+            >
+              Sair
+            </v-btn>
           </template>
         </v-list-item>
       </template>
@@ -57,11 +62,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, inject } from 'vue'
+import type { UserContainer } from '@/features/user/di/userContainer'
+import type { User } from '@/features/user/domain/entity/user'
+import type { AuthContainer } from '@/features/auth/di/auth-container'
 
 const drawer = ref(true)
 const rail = ref(true)
 const selectedItem = ref('students')
+const user = ref<User | null>()
+
+const userServiceContainer = inject<UserContainer>('user')
+const authServiceContainer = inject<AuthContainer>('auth')
+
+async function fetchUser() {
+  try {
+    const res = await userServiceContainer!.findUser.execute()
+    user.value = res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function logout() {
+  try {
+    await authServiceContainer!.logout.execute()
+    window.location.href = '/login'
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted(() => {
+  fetchUser()
+})
 </script>
 
 <style scoped>

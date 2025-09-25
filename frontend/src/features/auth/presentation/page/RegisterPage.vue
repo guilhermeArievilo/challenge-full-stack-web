@@ -8,10 +8,16 @@
         <h1 class="text-h2 text-primary text-center">Crie sua conta</h1>
         <p class="text-center text-onSurfaceVariant">Preencha os dados a seguir</p>
       </div>
-      <v-form class="d-flex flex-column ga-2" fast-fail validate-on="blur" @submit.prevent>
+      <v-form
+        ref="formRef"
+        class="d-flex flex-column ga-2"
+        fast-fail
+        validate-on="blur"
+        @submit.prevent="onRegister"
+      >
         <v-text-field
           v-model="name"
-          :rules="nameRule"
+          :rules="[requiredRule]"
           label="Nome"
           variant="solo"
           placeholder="john"
@@ -19,7 +25,7 @@
         />
         <v-text-field
           v-model="email"
-          :rules="emailRules"
+          :rules="[emailRule, requiredRule]"
           label="E-mail"
           variant="solo"
           placeholder="johndoe@gmail.com"
@@ -28,7 +34,7 @@
         />
         <v-text-field
           v-model="password"
-          :rules="passwordRules"
+          :rules="[requiredRule]"
           label="Senha"
           type="password"
           variant="solo"
@@ -44,22 +50,44 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { inject } from 'vue'
+import { type AuthContainer } from '../../di/auth-container'
 import { useRouter } from 'vue-router'
+import { requiredRule, emailRule } from '@/shared/utils/rolesValidations'
 const router = useRouter()
+import { ref } from 'vue'
+
+const formRef = ref()
+
+const authServiceContainer = inject<AuthContainer>('auth')
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 
-const nameRule = [(value: string) => !!value || 'Nome é obrigatório']
-const emailRules = [
-  (value: string) => !!value || 'E-mail é obrigatório',
-  (value: string) => /.+@.+\..+/.test(value) || 'E-mail deve ser válido',
-]
-const passwordRules = [(value: string) => !!value || 'Senha é obrigatória']
-
 function goToLogin() {
   router.push('/login')
+}
+
+async function onRegister() {
+  const valid = await formRef.value.isValid
+
+  if (!valid) {
+    return
+  }
+
+  try {
+    const result = await authServiceContainer!.register.execute({
+      email: email.value,
+      password: password.value,
+      name: name.value,
+    })
+
+    if (result) {
+      router.push('/login')
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>

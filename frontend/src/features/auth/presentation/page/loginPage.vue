@@ -9,7 +9,7 @@
         <p class="text-center text-onSurfaceVariant">Entre com seu e-mail e senha</p>
       </div>
       <v-form
-        :ref="formRef"
+        ref="formRef"
         class="d-flex flex-column ga-2"
         fast-fail
         validate-on="blur"
@@ -61,7 +61,7 @@ function goToRegister() {
 }
 
 async function onLogin() {
-  const { valid } = await formRef.value.validate()
+  const valid = await formRef.value.isValid
 
   if (!valid) {
     return

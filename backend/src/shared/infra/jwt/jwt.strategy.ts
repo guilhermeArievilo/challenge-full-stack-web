@@ -20,3 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return { sub: payload.sub, name: payload.name, email: payload.email };
   }
 }
+export interface AuthenticatedRequest extends Request {
+  user: JwtPayload;
+}

@@ -30,7 +30,7 @@
       item-value="name"
       @update:options="loadStudents"
     >
-      <template v-slot:item.actions="{ item }">
+      <template #item.actions="{ item }: { item: Student }">
         <div class="d-flex ga-2 justify-end">
           <v-icon
             color="secondary"
@@ -64,6 +64,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, inject } from 'vue'
+import type { DataTableHeader } from 'vuetify'
 import StudentDialog from '../components/StudentDialog.vue'
 import type {
   CreateStudentDTO,
@@ -90,7 +91,7 @@ const openFeedback = ref(false)
 
 const disabledBtns = ref(false)
 
-const headers = [
+const headers: DataTableHeader[] = [
   { title: 'Registro Acadêmico', align: 'start', key: 'ra' },
   { title: 'Nome', align: 'center', key: 'name' },
   { title: 'CPF', align: 'center', key: 'cpf' },

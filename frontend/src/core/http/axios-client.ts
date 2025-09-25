@@ -35,7 +35,11 @@ api.interceptors.response.use(
   (r) => r,
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean }
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.config?.url !== '/auth/refresh' &&
+      error.response?.status === 401 &&
+      !originalRequest._retry
+    ) {
       const auth = useAuthStore()
       if (isRefreshing) {
         return new Promise((resolve, reject) => {

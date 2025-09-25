@@ -1,10 +1,13 @@
+import type UserRepository from '@/features/user/domain/repository/userRepository'
 import type { LoginDTO, TokenDto, RegisterDTO } from '../../domain/entities/authEntities'
 import type AuthRepository from '../../domain/repository/authRepository'
 import AuthRemoteDatasource from '../datasource/auth-remote-datasource'
 import { type AuthStoreDatasource } from '../datasource/auth-store-datasource'
+import type { User } from '@/features/user/domain/entity/user'
 
 export default class AuthRepositoryImpl implements AuthRepository {
   constructor(
+    private readonly userRepository: UserRepository,
     private readonly authRemoteDatasource: AuthRemoteDatasource,
     private readonly authLocalDatasource: AuthStoreDatasource,
   ) {}
@@ -17,8 +20,8 @@ export default class AuthRepositoryImpl implements AuthRepository {
     return await this.authRemoteDatasource.login(params)
   }
 
-  async register(params: RegisterDTO): Promise<TokenDto> {
-    return await this.authRemoteDatasource.register(params)
+  async register(params: RegisterDTO): Promise<User> {
+    return await this.userRepository.register(params)
   }
 
   async logout(): Promise<void> {

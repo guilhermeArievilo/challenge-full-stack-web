@@ -10,11 +10,6 @@ export default class AuthRemoteDatasource {
     return res.data
   }
 
-  public async register(params: RegisterDTO) {
-    const res = await this.apiClient.post('/auth/register', params)
-    return res.data
-  }
-
   public async logout() {
     await this.apiClient.post('/auth/logout')
   }

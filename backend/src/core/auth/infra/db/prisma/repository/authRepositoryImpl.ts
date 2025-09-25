@@ -55,6 +55,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
   }
 
   async verifyToken(refreshToken: string): Promise<RefreshToken | null> {
+    if (!refreshToken) return null;
     const tokenHash = this.hash(refreshToken);
     return await this.findByHash(tokenHash);
   }
