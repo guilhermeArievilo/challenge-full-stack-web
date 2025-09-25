@@ -8,7 +8,7 @@ export default class FindStudentsUseCase {
   ) {}
 
   async execute(params: FindStudentsRequestDto): Promise<PaginatedFindStudentsResponse> {
-    const { page = 1, limit = 20, orderBy = 'name', order = 'asc', query } = params;
+    const { page = 1, limit = 20, orderBy = 'name', order = 'asc', query='' } = params;
     
     return await this.studentsRepository.find({ page, limit, orderBy, order, query });
   }

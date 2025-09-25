@@ -72,16 +72,16 @@ export class StudentController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getStudents(
-    @Query('page') page?: number,
-    @Query('limit') limit?: number,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
     @Query('orderBy') orderBy?: keyof StudentProps,
     @Query('order') order?: 'asc' | 'desc',
     @Query('query') query?: string,
   ) {
     try {
       const students = await this.findStudentsUseCase.execute({
-        page,
-        limit,
+        page: Number(page),
+        limit: Number(limit),
         orderBy,
         order,
         query

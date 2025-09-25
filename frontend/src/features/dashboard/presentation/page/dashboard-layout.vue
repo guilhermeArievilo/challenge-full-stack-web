@@ -48,7 +48,11 @@
         </v-list>
       </div>
     </v-navigation-drawer>
-    <router-view />
+    <div class="pt-10 h-full w-full">
+      <v-container>
+        <router-view />
+      </v-container>
+    </div>
   </v-layout>
 </template>
 
@@ -63,5 +67,8 @@ const selectedItem = ref('students')
 <style scoped>
 .h-full {
   height: 100%;
+}
+.w-full {
+  width: 100%;
 }
 </style>
