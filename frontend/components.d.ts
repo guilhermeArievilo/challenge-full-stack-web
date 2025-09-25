@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    FeedbackSnackbar: typeof import('./src/shared/presentation/components/feedback-snackbar.vue')['default']
     PrimaryButton: typeof import('./src/shared/presentation/components/primary-button.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

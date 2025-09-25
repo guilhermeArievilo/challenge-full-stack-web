@@ -9,6 +9,7 @@
         <p class="text-center text-onSurfaceVariant">Entre com seu e-mail e senha</p>
       </div>
       <v-form
+        :ref="formRef"
         class="d-flex flex-column ga-2"
         fast-fail
         validate-on="blur"
@@ -16,7 +17,7 @@
       >
         <v-text-field
           v-model="email"
-          :rules="emailRules"
+          :rules="[requiredRule, emailRule]"
           label="E-mail"
           variant="solo"
           placeholder="johndoe@gmail.com"
@@ -25,7 +26,7 @@
         />
         <v-text-field
           v-model="password"
-          :rules="passwordRules"
+          :rules="[requiredRule]"
           label="Senha"
           type="password"
           variant="solo"
@@ -44,28 +45,30 @@
 import { inject } from 'vue'
 import { type AuthContainer } from '../../di/auth-container'
 import { useRouter } from 'vue-router'
+import { requiredRule, emailRule } from '@/shared/utils/rolesValidations'
 const router = useRouter()
 import { ref } from 'vue'
+
+const formRef = ref()
 
 const authServiceContainer = inject<AuthContainer>('auth')
 
 const email = ref('')
 const password = ref('')
 
-const emailRules = [
-  (value: string) => !!value || 'E-mail é obrigatório',
-  (value: string) => /.+@.+\..+/.test(value) || 'E-mail deve ser válido',
-]
-
-const passwordRules = [(value: string) => !!value || 'Senha é obrigatória']
-
 function goToRegister() {
   router.push('/register')
 }
 
 async function onLogin() {
+  const { valid } = await formRef.value.validate()
+
+  if (!valid) {
+    return
+  }
+
   try {
-    const result = await authServiceContainer.login.execute({
+    const result = await authServiceContainer!.login.execute({
       identifier: email.value,
       password: password.value,
     })

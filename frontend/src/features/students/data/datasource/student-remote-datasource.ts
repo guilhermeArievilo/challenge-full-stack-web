@@ -25,7 +25,7 @@ export default class StudentRemoteDatasource {
 
     if (page !== undefined) queryParams.append('page', String(page))
     if (limit !== undefined) queryParams.append('limit', String(limit))
-    if (orderBy) queryParams.append('orderBy', orderBy)
+    if (orderBy) queryParams.append('orderBy', String(orderBy))
     if (order) queryParams.append('order', order)
     if (query) queryParams.append('query', query)
 
