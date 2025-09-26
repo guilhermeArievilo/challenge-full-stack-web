@@ -1,7 +1,7 @@
 
-import Student from "../../entity/student";
-import StudentsRepository, { PaginatedFindStudentsResponse } from "../repository/studentsRepository";
-import FindStudentsUseCase from "./findStudentsUseCase";
+import Student from "../../../entity/student";
+import StudentsRepository, { PaginatedFindStudentsResponse } from "../../repository/studentsRepository";
+import FindStudentsUseCase from "../findStudentsUseCase";
 
 describe('FindStudentsUseCase', () => {
   let useCase: FindStudentsUseCase;

@@ -1,9 +1,9 @@
 
 import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
 import ResourceNotFoundError from "@/shared/exceptions/resourceNotFoundError";
-import Student from "../../entity/student";
-import StudentsRepository from "../repository/studentsRepository";
-import DeleteStudentUseCase from "./deleteStudentUseCase";
+import Student from "../../../entity/student";
+import StudentsRepository from "../../repository/studentsRepository";
+import DeleteStudentUseCase from "../deleteStudentUseCase";
 
 describe('DeleteStudentUseCase', () => {
   let useCase: DeleteStudentUseCase;

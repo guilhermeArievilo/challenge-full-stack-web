@@ -1,9 +1,9 @@
 
 import { ResourceAlreadyExistError } from "@/shared/exceptions/resourceAlreadyExistError";
 import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
-import Student from "../../entity/student";
-import StudentsRepository, { CreateStudentDTO } from "../repository/studentsRepository";
-import CreateStudentUseCase from "./createStudentUseCase";
+import Student from "../../../entity/student";
+import StudentsRepository, { CreateStudentDTO } from "../../repository/studentsRepository";
+import CreateStudentUseCase from "../createStudentUseCase";
 
 describe('CreateStudentUseCase', () => {
   let useCase: CreateStudentUseCase;

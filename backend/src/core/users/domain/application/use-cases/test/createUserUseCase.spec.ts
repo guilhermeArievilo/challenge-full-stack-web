@@ -1,8 +1,8 @@
 
 import { ResourceAlreadyExistError } from "@/shared/exceptions/resourceAlreadyExistError";
-import User from "../../entity/user";
-import UserRepository, { CreateUserDTO } from "../repository/userRepository";
-import CreateUserUseCase from "./createUserUseCase";
+import User from "../../../entity/user";
+import UserRepository, { CreateUserDTO } from "../../repository/userRepository";
+import CreateUserUseCase from "../createUserUseCase";
 import * as bcrypt from "bcrypt";
 
 jest.mock('bcrypt');

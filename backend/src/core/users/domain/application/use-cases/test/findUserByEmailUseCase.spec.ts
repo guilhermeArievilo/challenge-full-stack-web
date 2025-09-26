@@ -1,9 +1,9 @@
 
 import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
 import ResourceNotFoundError from "@/shared/exceptions/resourceNotFoundError";
-import User from "../../entity/user";
-import UserRepository from "../repository/userRepository";
-import FindUserByEmailUseCase from "./findUserByEmailUseCase";
+import User from "../../../entity/user";
+import UserRepository from "../../repository/userRepository";
+import FindUserByEmailUseCase from "../findUserByEmailUseCase";
 
 describe('FindUserByEmailUseCase', () => {
   let useCase: FindUserByEmailUseCase;

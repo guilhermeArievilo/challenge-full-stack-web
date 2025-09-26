@@ -1,8 +1,8 @@
 
 import { UnauthorizedException } from "@nestjs/common";
-import AuthRepository from "../repository/authRepository";
-import LogoutUseCase from "./logoutUseCase";
-import RefreshToken from "../../entities/refreshToken";
+import AuthRepository from "../../repository/authRepository";
+import LogoutUseCase from "./../logoutUseCase";
+import RefreshToken from "../../../entities/refreshToken";
 
 describe('LogoutUseCase', () => {
   let useCase: LogoutUseCase;
@@ -26,6 +26,7 @@ describe('LogoutUseCase', () => {
       userId: 'user-id',
       expiresIn: new Date(Date.now() + 1000 * 60 * 60 * 24),
       revoked: false,
+      tokenHash: 'token-hash',
     }, 'token-id');
 
     authRepository.verifyToken.mockResolvedValue(token);
@@ -47,6 +48,7 @@ describe('LogoutUseCase', () => {
       userId: 'user-id',
       expiresIn: new Date(Date.now() + 1000 * 60 * 60 * 24),
       revoked: true,
+      tokenHash: 'token-hash',
     }, 'token-id');
 
     authRepository.verifyToken.mockResolvedValue(token);
@@ -59,6 +61,7 @@ describe('LogoutUseCase', () => {
       userId: 'user-id',
       expiresIn: new Date(Date.now() - 1000),
       revoked: false,
+      tokenHash: 'token-hash',
     }, 'token-id');
 
     authRepository.verifyToken.mockResolvedValue(token);

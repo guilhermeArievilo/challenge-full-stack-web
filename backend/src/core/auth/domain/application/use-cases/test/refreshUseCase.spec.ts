@@ -1,10 +1,10 @@
 
 import UserRepository from "@/core/users/domain/application/repository/userRepository";
 import { UnauthorizedException } from "@nestjs/common";
-import AuthRepository from "../repository/authRepository";
-import RefreshUseCase from "./refreshUseCase";
+import AuthRepository from "../../repository/authRepository";
+import RefreshUseCase from "./../refreshUseCase";
 import { JwtServiceRS } from "@/shared/infra/jwt/jwt.service";
-import RefreshToken from "../../entities/refreshToken";
+import RefreshToken from "../../../entities/refreshToken";
 import User from "@/core/users/domain/entity/user";
 
 describe('RefreshUseCase', () => {
@@ -41,6 +41,7 @@ describe('RefreshUseCase', () => {
       userId: 'user-id',
       expiresIn: new Date(Date.now() + 1000 * 60 * 60 * 24),
       revoked: false,
+      tokenHash: 'token-hash',
     }, 'token-id');
 
     const user = new User({
@@ -74,6 +75,7 @@ describe('RefreshUseCase', () => {
       userId: 'user-id',
       expiresIn: new Date(Date.now() + 1000 * 60 * 60 * 24),
       revoked: false,
+      tokenHash: 'token-hash',
     }, 'token-id');
 
     authRepository.verifyToken.mockResolvedValue(token);

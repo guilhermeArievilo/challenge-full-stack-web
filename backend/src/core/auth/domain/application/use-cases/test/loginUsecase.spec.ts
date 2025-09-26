@@ -1,12 +1,12 @@
 
 import * as bcrypt from 'bcrypt';
-import LoginUseCase, { LoginDTO } from './loginUseCase';
+import LoginUseCase, { LoginDTO } from './../loginUseCase';
 import UserRepository from '@/core/users/domain/application/repository/userRepository';
-import AuthRepository from '../repository/authRepository';
+import AuthRepository from '../../repository/authRepository';
 import { JwtServiceRS } from '@/shared/infra/jwt/jwt.service';
 import User from '@/core/users/domain/entity/user';
 import InvalidCredentialsError from '@/shared/exceptions/invalidCredentialsError';
-import RefreshToken from '../../entities/refreshToken';
+import RefreshToken from '../../../entities/refreshToken';
 
 describe('LoginUseCase', () => {
   let loginUseCase: LoginUseCase;

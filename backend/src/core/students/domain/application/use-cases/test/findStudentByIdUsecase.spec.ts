@@ -1,7 +1,7 @@
 import RequiredFieldError from "@/shared/exceptions/requiredFieldError";
-import Student from "../../entity/student";
-import StudentsRepository from "../repository/studentsRepository";
-import FindStudentByIdUseCase from "./findStudentByIdUseCase";
+import Student from "../../../entity/student";
+import StudentsRepository from "../../repository/studentsRepository";
+import FindStudentByIdUseCase from "../findStudentByIdUseCase";
 import ResourceNotFoundError from "@/shared/exceptions/resourceNotFoundError";
 
 
