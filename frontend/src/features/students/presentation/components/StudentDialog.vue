@@ -60,7 +60,7 @@ import type {
   UpdateStudentDTO,
 } from '@/features/students/domain/repository/studentRepository'
 import { requiredRule, onlyNumbersRule, emailRule, cpfRule } from '@/shared/utils/rolesValidations'
-const { student } = defineProps<{ student?: Student }>()
+const { student } = defineProps<{ student?: Student | null }>()
 const open = defineModel<boolean | undefined>()
 const emit = defineEmits<{
   (e: 'create', data: CreateStudentDTO): void
@@ -97,6 +97,10 @@ async function onSave() {
   }
 
   open.value = false
+  name.value = ''
+  ra.value = ''
+  email.value = ''
+  cpf.value = ''
 }
 
 function onCancel() {

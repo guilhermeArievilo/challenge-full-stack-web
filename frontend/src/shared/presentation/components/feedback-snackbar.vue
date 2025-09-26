@@ -1,9 +1,16 @@
 <template>
-  <v-snackbar v-model="open">
-    {{ text }}
+  <v-snackbar
+    v-model="open"
+    :vertical="status === 'error'"
+    :color="color"
+    variant="tonal"
+    rounded="xl"
+  >
+    <h3 v-if="status === 'error'">Erro:</h3>
+    <p>{{ text }}</p>
 
     <template v-slot:actions>
-      <v-btn :color="color" variant="text" @click="open = false"> Fechar </v-btn>
+      <v-btn variant="text" @click="open = false"> Fechar </v-btn>
     </template>
   </v-snackbar>
 </template>

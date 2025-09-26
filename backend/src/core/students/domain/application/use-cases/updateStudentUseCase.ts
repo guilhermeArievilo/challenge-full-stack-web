@@ -17,7 +17,10 @@ export default class UpdateStudentUseCase {
 
     if (email) {
       const existingStudentByEmail = await this.studentsRepository.findByEmail(email);
-      if (existingStudentByEmail) throw new ResourceAlreadyExistError("Student with this Email already exists");
+      if (existingStudentByEmail) throw new ResourceAlreadyExistError({
+        resource: "Student",
+        field: "Email"
+      });
     }
 
     return await this.studentsRepository.update(id, data);

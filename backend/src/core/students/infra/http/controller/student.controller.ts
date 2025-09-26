@@ -27,46 +27,21 @@ export class StudentController {
   @Post()
   async createStudent(@Body() studentData: CreateStudentHttpDto) {
     const { name, email, cpf, ra } = studentData;
+    const student = await this.createStudentUseCase.execute({
+      name,
+      email,
+      cpf,
+      ra
+    });
 
-    try {
-      const student = await this.createStudentUseCase.execute({
-        name,
-        email,
-        cpf,
-        ra
-      });
-
-      return StudentViewModel.toHttp(student);
-    } catch (error) {
-      if (error instanceof RequiredFieldError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof ResourceAlreadyExistError) {
-        throw new BadRequestException(error.message);
-      }
-
-      throw error;
-    }
+    return StudentViewModel.toHttp(student);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async getStudentById(@Param('id') id: string) {
-    try {
-      const student = await this.findStudentByIdUseCase.execute(id);
-      return StudentViewModel.toHttp(student);
-    } catch (error) {
-      if (error instanceof RequiredFieldError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof ResourceNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      throw error;
-    }
+    const student = await this.findStudentByIdUseCase.execute(id);
+    return StudentViewModel.toHttp(student);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -78,24 +53,20 @@ export class StudentController {
     @Query('order') order?: 'asc' | 'desc',
     @Query('query') query?: string,
   ) {
-    try {
-      const students = await this.findStudentsUseCase.execute({
-        page: Number(page),
-        limit: Number(limit),
-        orderBy,
-        order,
-        query
-      });
+    const students = await this.findStudentsUseCase.execute({
+      page: Number(page),
+      limit: Number(limit),
+      orderBy,
+      order,
+      query
+    });
 
-      return {
-        data: students.data.map(StudentViewModel.toHttp),
-        total: students.total,
-        page: students.page,
-        limit: students.limit,
-      };
-    } catch (error) {
-      throw error;
-    }
+    return {
+      data: students.data.map(StudentViewModel.toHttp),
+      total: students.total,
+      page: students.page,
+      limit: students.limit,
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -105,42 +76,17 @@ export class StudentController {
     @Body() studentData: UpdateStudentHttpDto
   ) {
     const { name, email } = studentData;
+    const student = await this.updateStudentUseCase.execute(id, {
+      name,
+      email
+    });
 
-    try {
-      const student = await this.updateStudentUseCase.execute(id, {
-        name,
-        email
-      });
-
-      return StudentViewModel.toHttp(student);
-    } catch (error) {      
-      if (error instanceof RequiredFieldError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof ResourceAlreadyExistError) {
-        throw new BadRequestException(error.message);
-      }
-
-      throw error;
-    }
+    return StudentViewModel.toHttp(student);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async deleteStudent(@Param('id') id: string) {
-    try {
-      await this.deleteStudentUseCase.execute(id);
-    } catch (error) {      
-      if (error instanceof RequiredFieldError) {
-        throw new BadRequestException(error.message);
-      }
-
-      if (error instanceof ResourceNotFoundError) {
-        throw new NotFoundException(error.message);
-      }
-
-      throw error;
-    }
+    await this.deleteStudentUseCase.execute(id);
   }
 }

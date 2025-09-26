@@ -47,6 +47,7 @@
       </v-form>
     </v-sheet>
   </v-main>
+  <feedback-snackbar :text="feedbackMenssage" :status="feedbackStatus" v-model="openFeedback" />
 </template>
 
 <script setup lang="ts">
@@ -56,6 +57,7 @@ import { useRouter } from 'vue-router'
 import { requiredRule, emailRule } from '@/shared/utils/rolesValidations'
 const router = useRouter()
 import { ref } from 'vue'
+import { getErrorMessage } from '@/core/exceptions/getErrorMessage'
 
 const formRef = ref()
 
@@ -64,6 +66,10 @@ const authServiceContainer = inject<AuthContainer>('auth')
 const name = ref('')
 const email = ref('')
 const password = ref('')
+
+const feedbackMenssage = ref('')
+const feedbackStatus = ref('info')
+const openFeedback = ref(false)
 
 function goToLogin() {
   router.push('/login')
@@ -86,8 +92,10 @@ async function onRegister() {
     if (result) {
       router.push('/login')
     }
-  } catch (error) {
-    console.log(error)
+  } catch (error: unknown) {
+    feedbackMenssage.value = getErrorMessage(error)
+    feedbackStatus.value = 'error'
+    openFeedback.value = true
   }
 }
 </script>

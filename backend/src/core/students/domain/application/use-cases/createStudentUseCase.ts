@@ -19,13 +19,22 @@ export default class CreateStudentUseCase {
     if (!email) throw new RequiredFieldError("Email");
 
     const existingStudentByCpf = await this.studentsRepository.findByCpf(cpf);
-    if (existingStudentByCpf) throw new ResourceAlreadyExistError("Student with this CPF already exists");
+    if (existingStudentByCpf) throw new ResourceAlreadyExistError({
+      resource: "Student",
+      field: "CPF"
+    });
 
     const existingStudentByRa = await this.studentsRepository.findByRa(ra);
-    if (existingStudentByRa) throw new ResourceAlreadyExistError("Student with this RA already exists");
+    if (existingStudentByRa) throw new ResourceAlreadyExistError({
+      resource: "Student",
+      field: "RA"
+    });
 
     const existingStudentByEmail = await this.studentsRepository.findByEmail(email);
-    if (existingStudentByEmail) throw new ResourceAlreadyExistError("Student with this Email already exists");
+    if (existingStudentByEmail) throw new ResourceAlreadyExistError({
+      resource: "Student",
+      field: "Email"
+    });
 
     return await this.studentsRepository.create(data);
   }

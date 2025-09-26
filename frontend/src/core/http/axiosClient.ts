@@ -4,6 +4,7 @@ import AuthRepositoryImpl from '@/features/auth/data/repository/authRepositoryIm
 import LogoutUseCase from '@/features/auth/domain/use-cases/logoutUseCase'
 import axios, { AxiosError } from 'axios'
 import type { AxiosRequestConfig } from 'axios'
+import { httpErrorHandler } from './httpErrorHandling'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_API_BASE,
@@ -37,6 +38,7 @@ api.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean }
     if (
       error.config?.url !== '/auth/refresh' &&
+      error.config?.url !== '/auth/login' &&
       error.response?.status === 401 &&
       !originalRequest._retry
     ) {
@@ -70,7 +72,8 @@ api.interceptors.response.use(
         isRefreshing = false
       }
     }
-    return Promise.reject(error)
+
+    return Promise.reject(httpErrorHandler(error))
   },
 )
 

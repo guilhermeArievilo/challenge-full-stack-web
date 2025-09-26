@@ -1,4 +1,4 @@
-import api from '@/core/http/axios-client'
+import type { User } from '@/features/user/domain/entity/user'
 import type { LoginDTO, RegisterDTO, TokenDto } from '../../domain/entities/authEntities'
 import type { Axios } from 'axios'
 
@@ -16,6 +16,11 @@ export default class AuthRemoteDatasource {
 
   public async refreshToken() {
     const res = await this.apiClient.post<TokenDto>('/auth/refresh')
+    return res.data
+  }
+
+  public async register(userData: RegisterDTO) {
+    const res = await this.apiClient.post<User>('/user/register', userData)
     return res.data
   }
 }

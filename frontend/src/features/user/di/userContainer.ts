@@ -1,4 +1,4 @@
-import api from '@/core/http/axios-client'
+import api from '@/core/http/axiosClient'
 import UserRemoteDatasource from '../data/datasource/userRemoteDatasource'
 import { useUserStore } from '../data/datasource/userStoreDatasource'
 import UserRepositoryImpl from '../data/repository/userRepositoryImpl'

@@ -1,10 +1,11 @@
 import UserRepository from "@/core/users/domain/application/repository/userRepository";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import AuthRepository from "../repository/authRepository";
 import * as bcrypt from "bcrypt";
 import { JwtPayload } from "../../entities/payload";
 import { JwtServiceRS } from "@/shared/infra/jwt/jwt.service";
 import { TokensResponse } from "../../entities/tokensResponse";
+import InvalidCredentialsError from "@/shared/exceptions/invalidCredentialsError";
 
 export type LoginDTO = {
   identifier: string;
@@ -22,10 +23,10 @@ export default class LoginUseCase {
 
   async execute({ identifier, password }: LoginDTO): Promise<TokensResponse> {
     const user = await this.userRepository.findByEmail(identifier);
-    if (!user) throw new UnauthorizedException("Invalid credentials");
+    if (!user) throw new InvalidCredentialsError();
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) throw new UnauthorizedException("Invalid credentials");
+    if (!isPasswordValid) throw new InvalidCredentialsError();
 
     const payload: JwtPayload = {
       sub: user.id!,

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column ga-4 py-4">
+  <div class="d-flex flex-column ga-4 py-4 px-12">
     <h1 class="text-h2">Consulta de alunos</h1>
     <div class="w-full d-flex ga-12 justify-content-between align-items-center">
       <v-text-field
@@ -39,7 +39,12 @@
             @click="onEditDialog(item)"
           ></v-icon>
 
-          <v-icon icon="mdi-delete" size="small" color="error" @click="onRemove(item.id)"></v-icon>
+          <v-icon
+            icon="mdi-delete"
+            size="small"
+            color="error"
+            @click="onRemoveDialog(item)"
+          ></v-icon>
         </div>
       </template>
     </v-data-table-server>
@@ -48,16 +53,18 @@
   <StudentDialog
     v-model="openStudentDialog"
     :student="studentOnCtx"
-    @create="
-      (data) => {
-        onCreateStudent(data)
-      }
-    "
+    @create="onCreateStudent"
     @update="
       (data) => {
         onUpdateStudent(data.id, data)
       }
     "
+  />
+  <DeleteStudentDialog
+    v-if="studentOnCtx"
+    v-model="openDeleteDialog"
+    :student="studentOnCtx"
+    @continue="onRemoveStudent"
   />
   <feedback-snackbar :text="feedbackMenssage" :status="feedbackStatus" v-model="openFeedback" />
 </template>
@@ -73,13 +80,17 @@ import type {
   PaginatedFindStudentsResponse,
   UpdateStudentDTO,
 } from '../../domain/repository/studentRepository'
+import DeleteStudentDialog from '../components/DeleteStudentDialog.vue'
+import { getErrorMessage } from '@/core/exceptions/getErrorMessage'
 
 const studentsServiceContiner = inject<StudentContainer>('student')
 const studentsResult = ref<PaginatedFindStudentsResponse | null>(null)
 const loading = ref(false)
 
 const openStudentDialog = ref(false)
-const studentOnCtx = ref<Student | undefined>(undefined)
+const studentOnCtx = ref<Student | null>(null)
+
+const openDeleteDialog = ref(false)
 
 const query = ref('')
 const pageRef = ref(1)
@@ -99,13 +110,18 @@ const headers: DataTableHeader[] = [
 ]
 
 function onCreateDialog() {
-  studentOnCtx.value = undefined
+  studentOnCtx.value = null
   openStudentDialog.value = true
 }
 
 function onEditDialog(student: Student) {
   studentOnCtx.value = student
   openStudentDialog.value = true
+}
+
+function onRemoveDialog(student: Student) {
+  studentOnCtx.value = student
+  openDeleteDialog.value = true
 }
 
 async function onUpdateStudent(id: string, data: UpdateStudentDTO) {
@@ -115,10 +131,10 @@ async function onUpdateStudent(id: string, data: UpdateStudentDTO) {
     feedbackStatus.value = 'success'
     await fetchStudents()
   } catch (error) {
-    console.log(error)
-    feedbackMenssage.value = 'Erro ao atualizar o registro do aluno'
+    feedbackMenssage.value = getErrorMessage(error) ?? 'Erro ao atualizar o registro do aluno'
     feedbackStatus.value = 'error'
   } finally {
+    studentOnCtx.value = null
     openFeedback.value = true
   }
 }
@@ -131,16 +147,16 @@ async function onCreateStudent(data: CreateStudentDTO) {
     feedbackStatus.value = 'success'
     await fetchStudents()
   } catch (error) {
-    console.log(error)
-    feedbackMenssage.value = 'Erro ao cadastrar aluno'
+    feedbackMenssage.value = getErrorMessage(error) ?? 'Erro ao cadastrar aluno'
     feedbackStatus.value = 'error'
   } finally {
+    studentOnCtx.value = null
     openFeedback.value = true
     disabledBtns.value = false
   }
 }
 
-async function onRemove(id: string) {
+async function onRemoveStudent(id: string) {
   try {
     await studentsServiceContiner!.deleteStudent.execute(id)
     feedbackMenssage.value = 'O aluno foi removido com sucesso'
@@ -148,10 +164,11 @@ async function onRemove(id: string) {
     openFeedback.value = true
     await fetchStudents()
   } catch (error) {
-    console.log(error)
-    feedbackMenssage.value = 'Erro ao remover aluno'
+    feedbackMenssage.value = getErrorMessage(error) ?? 'Erro ao remover aluno'
     feedbackStatus.value = 'error'
     openFeedback.value = true
+  } finally {
+    studentOnCtx.value = null
   }
 }
 

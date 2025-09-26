@@ -17,7 +17,10 @@ export default class CreateUserUseCase {
 
     const existingUser = await this.userRepository.findByEmail(email);
 
-    if (existingUser) throw new ResourceAlreadyExistError("User");
+    if (existingUser) throw new ResourceAlreadyExistError({
+      resource: "User",
+      field: "Email"
+    });
 
     const hashPassword = await bcrypt.hash(password, 10);
 

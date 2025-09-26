@@ -63,6 +63,7 @@
       </v-container>
     </div>
   </v-layout>
+  <feedback-snackbar :text="feedbackMenssage" :status="feedbackStatus" v-model="openFeedback" />
 </template>
 
 <script setup lang="ts">
@@ -76,6 +77,10 @@ const rail = ref(true)
 const selectedItem = ref('students')
 const user = ref<User | null>()
 
+const feedbackMenssage = ref('')
+const feedbackStatus = ref('info')
+const openFeedback = ref(false)
+
 const userServiceContainer = inject<UserContainer>('user')
 const authServiceContainer = inject<AuthContainer>('auth')
 
@@ -83,8 +88,11 @@ async function fetchUser() {
   try {
     const res = await userServiceContainer!.findUser.execute()
     user.value = res
-  } catch (error) {
-    console.log(error)
+  } catch {
+    feedbackMenssage.value =
+      'Ops, tivemos problemas em buscar seus dados, tente novamente mais tarde'
+    feedbackStatus.value = 'error'
+    openFeedback.value = true
   }
 }
 
@@ -92,8 +100,10 @@ async function logout() {
   try {
     await authServiceContainer!.logout.execute()
     window.location.href = '/login'
-  } catch (error) {
-    console.log(error)
+  } catch {
+    feedbackMenssage.value = 'Ops, tivemos problemas em sair, tente novamente mais tarde'
+    feedbackStatus.value = 'error'
+    openFeedback.value = true
   }
 }
 

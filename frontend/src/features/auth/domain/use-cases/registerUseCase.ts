@@ -8,15 +8,15 @@ export default class RegisterUseCase {
     const { name, email, password } = params
 
     if (!name) {
-      throw new Error('Name is required')
+      throw new Error('Nome é obrigatório')
     }
 
     if (!email) {
-      throw new Error('Name is required')
+      throw new Error('Email é obrigatório')
     }
 
     if (!password) {
-      throw new Error('Password is required')
+      throw new Error('Senha é obrigatória')
     }
 
     await this.authRepository.register(params)

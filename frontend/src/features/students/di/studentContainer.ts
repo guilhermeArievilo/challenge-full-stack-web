@@ -1,4 +1,4 @@
-import api from '@/core/http/axios-client'
+import api from '@/core/http/axiosClient'
 import StudentRemoteDatasource from '../data/datasource/studentRemoteDatasource'
 import StudentRepositoryImpl from '../data/repository/studentRepositoryImpl'
 import CreateStudentUseCase from '../domain/use-cases/createStudentUseCase'

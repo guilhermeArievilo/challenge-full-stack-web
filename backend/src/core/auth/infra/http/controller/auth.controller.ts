@@ -17,23 +17,19 @@ export class AuthController {
   async login(@Body() loginData: LoginHttpRequestDTO, @Res() res: Response) {
     const { identifier, password } = loginData;
 
-    try {
-      const tokens = await this.loginUseCase.execute({
-        identifier,
-        password
-      });
+    const tokens = await this.loginUseCase.execute({
+      identifier,
+      password
+    });
 
-      res.cookie('refreshToken', tokens.refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
-        path: '/auth'
-      });
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/auth'
+    });
 
-      return res.json({ accessToken: tokens.accessToken });
-    } catch (error) {
-      throw error;
-    }
+    return res.json({ accessToken: tokens.accessToken });
   }
 
   @HttpCode(200)
@@ -41,35 +37,27 @@ export class AuthController {
   async refresh(@Req() req: Request, @Res() res: Response) {
     const refreshToken = req.cookies.refreshToken;
 
-    try {
-      const tokens = await this.refreshUseCase.execute(refreshToken);
+    const tokens = await this.refreshUseCase.execute(refreshToken);
 
-      res.cookie('refreshToken', tokens.refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
-        path: '/auth'
-      });
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/auth'
+    });
 
-      return res.json({ accessToken: tokens.accessToken });
-    } catch (error) {
-      throw error;
-    }
+    return res.json({ accessToken: tokens.accessToken });
   }
 
   @HttpCode(200)
   @Post('/logout')
   async logout(@Req() req: Request, @Res() res: Response) {
     const refreshToken = req.cookies.refreshToken;
+    
+    await this.logoutUseCase.execute(refreshToken);
+    
+    res.clearCookie('refreshToken', { path: '/auth' });
 
-    try {
-      await this.logoutUseCase.execute(refreshToken);
-      
-      res.clearCookie('refreshToken', { path: '/auth' });
-
-      return res.sendStatus(200);
-    } catch (error) {
-      throw error;
-    }
+    return res.sendStatus(200);
   }
 }
