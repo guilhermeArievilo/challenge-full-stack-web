@@ -5,6 +5,11 @@ Essa decisão foi tomada para garantir:
 - Maior testabilidade (módulos independentes e desacoplados);
 - Clareza na responsabilidade de cada camada (UI, casos de uso, domínio, infraestrutura).
 
+### Backend
+#### Optei por fazer um monólito, dividindo a aplicação em módulos, distribuindo suas responsabilidades. Separei em cada módulo o que era de domínio e o que era de infraestrutura, dessa forma, toda a lógica de negócio fica do lado do domínio, nos casos de uso, que vai definir suas depências para seu funcionamento.
+
+### Frontend
+#### Pensando em um SPA, a aplicação possui apenas 3 rotas, '/login', '/register' e '/' sendo o dashboard. Assim, usando a mesma divisão do backend básicamente, no entanto, por features, que pode definir módulos que as vezes não possuem regras de negócios, seja algo mais geral como a home, que se alimenta de outros módulos.
 ---
 
 ## Lista de bibliotecas de terceiros utilizadas
